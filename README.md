@@ -107,7 +107,7 @@ Agreement PDF templates are maintained as Blade views, while uploaded/generated 
 - Configure a dedicated development database and mail transport before testing workflows that write records or send messages.
 - Scheduled behavior is configured through Laravel's console kernel; configure the server scheduler if the deployment depends on scheduled tasks.
 - Apply new migrations during deployment using the team's backup and release process.
-- Review the point-specific implementation notes, including [`POINT_10_FILE_CHANGE_SUMMARY.md`](POINT_10_FILE_CHANGE_SUMMARY.md) and [`POINT_14_IMPLEMENTATION_FILE_SUMMARY.md`](POINT_14_IMPLEMENTATION_FILE_SUMMARY.md), for feature-level change history when those files are present in your checkout.
+
 
 ## Useful commands
 
