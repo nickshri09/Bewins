@@ -1,66 +1,123 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Bewins Services
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Bewins is a Laravel web application for managing customers, financial products, service orders, and internal operations for Bewin Services Private Limited. It includes an administrative dashboard and a client API used by the mobile application.
 
-## About Laravel
+## Technology
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- PHP 8.1 or newer
+- Laravel 10
+- MySQL or another Laravel-supported database
+- Composer
+- Node.js and npm (for frontend asset development/builds)
+- Laravel Sanctum (API authentication)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Main modules
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Client and office-user management, branches, roles, and permissions
+- BCS investments, loans, fixed deposits, repayments, and expected returns
+- Wallets, deposits, withdrawals, and transaction records
+- Client referral network and commission history, including up to three customer referral levels
+- BCS closure certificates and email status tracking
+- Investment and loan agreement generation, storage, and email delivery
+- Service catalogue, mobile service orders, and Razorpay payment flows
+- Activity history, reports, knowledge base, and dashboard administration
 
-## Learning Laravel
+The working behavior and available screens are defined by the routes, controllers, migrations, and views in this repository. Payment, mail, and other external integrations require valid environment credentials.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Local setup
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. Install PHP dependencies:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+   ```bash
+   composer install
+   ```
 
-## Laravel Sponsors
+2. Create a local `.env` using your team's approved environment template. This repository intentionally does not include production credentials. Configure at least `APP_NAME`, `APP_ENV`, `APP_KEY`, `APP_URL`, database connection values, mail settings, and any payment-provider keys you need locally.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+3. Generate an application key if one is not already set:
 
-### Premium Partners
+   ```bash
+   php artisan key:generate
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+4. Create the local database, then run migrations:
 
-## Contributing
+   ```bash
+   php artisan migrate
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   Only seed a development database when you have reviewed the seeders and intend to add their sample/default records:
 
-## Code of Conduct
+   ```bash
+   php artisan db:seed
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5. Link Laravel's public storage directory when the application needs it:
 
-## Security Vulnerabilities
+   ```bash
+   php artisan storage:link
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+6. Install frontend packages and build assets:
+
+   ```bash
+   npm install
+   npm run build
+   ```
+
+   For frontend development, run `npm run dev` in a separate terminal.
+
+7. Start the local web server:
+
+   ```bash
+   php artisan serve
+   ```
+
+Open the URL printed by Artisan (usually `http://127.0.0.1:8000`). Sign-in accounts are environment-specific; obtain local credentials from the project administrator rather than using production credentials in development.
+
+## Mobile API
+
+API routes are declared in [`routes/api.php`](routes/api.php) and are served under `/api`. The current route set includes:
+
+| Area | Routes |
+| --- | --- |
+| Authentication | `POST /api/client/register`, `POST /api/client/login`, forgot-password, OTP verification, and reset-password routes |
+| Profile and branches | Client profile read/update and branch listing |
+| Investments and deposits | Investment create/list/detail and fixed-deposit routes |
+| Loans | Loan create/list/detail and loan-product listing |
+| Referrals | `GET /api/client/referrals/summary` |
+| Wallet and withdrawals | Wallet summary, transactions, investment history, add-money/payment verification, investment list, and withdrawal requests |
+| Service orders | Categories, services, service details, Razorpay/wallet orders, payment verification, and customer order history |
+
+Several routes are grouped behind Sanctum authentication. Check the route middleware and controller authorization before exposing an endpoint to a mobile client; do not assume every route in the file has identical authentication requirements. Use HTTPS and keep API tokens and provider credentials out of source control.
+
+To inspect the full registered route list locally:
+
+```bash
+php artisan route:list --path=api
+```
+
+## Agreements and email
+
+Agreement PDF templates are maintained as Blade views, while uploaded/generated agreement files are associated with the relevant investment or loan. The agreement email service uses Laravel's configured mail transport. Update the templates in one place when approved agreement wording changes, and configure/test mail settings in a non-production environment before enabling delivery.
+
+## Configuration and operational notes
+
+- Never commit `.env`, API keys, payment secrets, customer identity documents, database dumps, or production uploads.
+- Configure a dedicated development database and mail transport before testing workflows that write records or send messages.
+- Scheduled behavior is configured through Laravel's console kernel; configure the server scheduler if the deployment depends on scheduled tasks.
+- Apply new migrations during deployment using the team's backup and release process.
+- Review the point-specific implementation notes, including [`POINT_10_FILE_CHANGE_SUMMARY.md`](POINT_10_FILE_CHANGE_SUMMARY.md) and [`POINT_14_IMPLEMENTATION_FILE_SUMMARY.md`](POINT_14_IMPLEMENTATION_FILE_SUMMARY.md), for feature-level change history when those files are present in your checkout.
+
+## Useful commands
+
+```bash
+php artisan route:list
+php artisan migrate:status
+php artisan cache:clear
+php artisan config:clear
+```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This is a private project. Use and distribution are subject to the organization’s ownership and licensing terms.
